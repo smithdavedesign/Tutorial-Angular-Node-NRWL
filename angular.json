@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "angular-app-nrwl",
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "css"
+    }
+  },
+  "projects": {
+    "angular-app-nrwl": {
+      "projectType": "application",
+      "root": "apps/angular-app-nrwl",
+      "sourceRoot": "apps/angular-app-nrwl/src",
+      "prefix": "ang-work-space",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/angular-app-nrwl",
+            "index": "apps/angular-app-nrwl/src/index.html",
+            "main": "apps/angular-app-nrwl/src/main.ts",
+            "polyfills": "apps/angular-app-nrwl/src/polyfills.ts",
+            "tsConfig": "apps/angular-app-nrwl/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/angular-app-nrwl/src/favicon.ico",
+              "apps/angular-app-nrwl/src/assets"
+            ],
+            "styles": ["apps/angular-app-nrwl/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/angular-app-nrwl/src/environments/environment.ts",
+                  "with": "apps/angular-app-nrwl/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "angular-app-nrwl:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "angular-app-nrwl:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "angular-app-nrwl:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/angular-app-nrwl/src/**/*.ts",
+              "apps/angular-app-nrwl/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/angular-app-nrwl"],
+          "options": {
+            "jestConfig": "apps/angular-app-nrwl/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "angular-app-nrwl-e2e": {
+      "root": "apps/angular-app-nrwl-e2e",
+      "sourceRoot": "apps/angular-app-nrwl-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/angular-app-nrwl-e2e/cypress.json",
+            "tsConfig": "apps/angular-app-nrwl-e2e/tsconfig.e2e.json",
+            "devServerTarget": "angular-app-nrwl:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "angular-app-nrwl:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/angular-app-nrwl-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}
